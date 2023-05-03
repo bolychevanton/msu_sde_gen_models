@@ -73,17 +73,28 @@
 
     \begin{frame}{Score-based Generative Modelling through SDE}
         \begin{center}
-            One more picture
             \includegraphics[width=0.7\textwidth]{pics/NoiseDenoise2.png}
         \end{center}
-        The main problem is to fit the neural network 
-        % $$
-        %     \boldsymbol{s}_{\boldsymbol{\theta}(\boldsymbol{x}, t)} \approx \nabla_{\boldsymbol{x}} p_t(\boldsymbol{x})
-        % $$
+        The main problem is to fit the neural network $\mathbf{s}_{\boldsymbol{\theta}}(\mathbf{x}(t), t)$ such that 
+        $$
+        \mathbf{s}_{\boldsymbol{\theta}}(\mathbf{x}(t), t) \approx \nabla_{\mathbf{x}} \log p_t(\mathbf{x})
+        $$
+    \end{frame}
+
+    \begin{frame}{Loss function}
+        \begin{multline*}
+            \boldsymbol{\theta}^*=\underset{\boldsymbol{\theta}}{\arg \min } \\ \mathbb{E}_t\left\{ 
+            \lambda(t) \mathbb{E}_{\mathbf{x}(0)} \mathbb{E}_{\mathbf{x}(t) \mid \mathbf{x}(0)}\left[\left\|\mathbf{s}_{\boldsymbol{\theta}}(\mathbf{x}(t), t)-\nabla_{\mathbf{x}(t)} \log p_{0 t}(\mathbf{x}(t) \mid \mathbf{x}(0))\right\|_2^2\right]\right\} .
+        \end{multline*}
+        
+        where 
+        $$
+        \lambda \propto 1 / \mathbb{E}\left[\left\|\nabla_{\mathbf{x}(t)} \log p_{0 t}(\mathbf{x}(t) \mid \mathbf{x}(0))\right\|_2^2\right]
+        $$
     \end{frame}
 
     \begin{frame}{2 approaches}
-        In $dx = f(x, t) + g(t) d w$ functions $f$ and $g$ can be arbitrary, so we will consider 2 approaches
+        In $\mathrm{d} \mathbf{x}=\mathbf{f}(\mathbf{x}, t) \mathrm{d} t+g(t) \mathrm{d} \mathbf{w}$ functions $\mathbf{f}$ and $g$ can be arbitrary, so we will consider 2 approaches
         \begin{itemize}
             \item Variance Exploding Approach
             \item Variance Preserving Approach
@@ -91,33 +102,76 @@
     \end{frame}
 
     \begin{frame}{Variance Exploding}
-        
+        \begin{itemize}
+            \item SDE 
+        $$
+        \mathrm{d} \mathbf{x}=\sqrt{\frac{\mathrm{d}\left[\sigma^2(t)\right]}{\mathrm{d} t}} \mathrm{~d} \mathbf{w}
+        $$
+            \item Forward Sampling
+            $$
+            \mathbf{x}_i=\mathbf{x}_{i-1}+\sqrt{\sigma_i^2-\sigma_{i-1}^2} \mathbf{z}_{i-1}
+            $$
+        \end{itemize}
     \end{frame}
 
-    \begin{frame}{Loss Function for Variance Exploding Approach}
-    \end{frame}
 
     \begin{frame}{Variance Preserving}
+        \begin{itemize}
+        \item SDE 
+            $$
+        \mathrm{d} \mathbf{x}=-\frac{1}{2} \beta(t) \mathbf{x} \mathrm{d} t+\sqrt{\beta(t)} \mathrm{d} \mathbf{w}
+        $$
+        \item Forward Sampling
+        $$
+        \mathbf{x}_i=\sqrt{1-\beta_i} \mathbf{x}_{i-1}+\sqrt{\beta_i} \mathbf{z}_{i-1}
+        $$
+        \end{itemize}
     \end{frame}
 
-    \begin{frame}{Loss Function for Variance Preserving Approach}
-    \end{frame}
-
-    \begin{frame}{Ancestral Sampling}
+    \begin{frame}{Ancestral Sampling for Variance Preserving}
+        $$
+        \mathbf{x}_{i-1}=\frac{1}{\sqrt{1-\beta_i}}\left(\mathbf{x}_i+\beta_i \mathbf{s}_{\boldsymbol{\theta}^*}\left(\mathbf{x}_i, i\right)\right)+\sqrt{\beta_i} \mathbf{z}_i, \quad i=N, N-1, \cdots, 1
+        $$
     \end{frame}
 
     \begin{frame}{Reverse Diffusion}
-    \end{frame}
-
-    \begin{frame}{Predictor Only Sampling}
+        Given a forward SDE
+$$
+\mathrm{d} \mathbf{x}=\mathbf{f}(\mathbf{x}, t) \mathrm{d} t+\mathbf{G}(t) \mathrm{d} \mathbf{w}
+$$
+and suppose the following iteration rule is a discretization of it:
+$$
+\mathbf{x}_{i+1}=\mathbf{x}_i+\mathbf{f}_i\left(\mathbf{x}_i\right)+\mathbf{G}_i \mathbf{z}_i, \quad i=0,1, \cdots, N-1
+$$
+Thus, one can propose to discretize the reverse-time SDE
+$$
+\mathrm{d} \mathbf{x}=\left[\mathbf{f}(\mathbf{x}, t)-\mathbf{G}(t) \mathbf{G}(t)^{\top} \nabla_{\mathbf{x}} \log p_t(\mathbf{x})\right] \mathrm{d} t+\mathbf{G}(t) \mathrm{d} \overline{\mathbf{w}}
+$$
+which gives the following iteration rule for $i \in\{0,1, \cdots, N-1\}$ :
+$$
+\mathbf{x}_i=\mathbf{x}_{i+1}-\mathbf{f}_{i+1}\left(\mathbf{x}_{i+1}\right)+\mathbf{G}_{i+1} \mathbf{G}_{i+1}^{\top} \mathbf{s}_{\boldsymbol{\theta}^*}\left(\mathbf{x}_{i+1}, i+1\right)+\mathbf{G}_{i+1} \mathbf{z}_{i+1},
+$$
+where our trained score-based model $\mathbf{s}_{\boldsymbol{\theta}} *\left(\mathbf{x}_i, i\right)$.
     \end{frame}
 
     \begin{frame}{Predictor-Corrector Sampling}
+        \begin{center}
+            \includegraphics[width=0.7\textwidth]{pics/PC.png}
+        \end{center}
     \end{frame}
 
-    \begin{frame}{Results. FID on CIFAR10}
+    \begin{frame}{Results. FID on CIFAR10. VE}            
+        \begin{center}
+            \includegraphics[width=0.7\textwidth]{pics/VE_table.png}
+        \end{center}
     \end{frame}
 
+
+    \begin{frame}{Results. FID on CIFAR10. VP}            
+        \begin{center}
+            \includegraphics[width=0.7\textwidth]{pics/VP_table.png}
+        \end{center}
+    \end{frame}
 
     % \input{contents/introduction.tex}
     % \input{contents/statement.tex}
