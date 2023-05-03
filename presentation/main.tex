@@ -38,9 +38,11 @@
     \end{frame}
 
     \begin{frame}{Langevin Dynamics}
-        \begin{equation}
+        \begin{equation*}
             z_{i+1} = z_i - \epsilon/2 \nabla_z E(z) + \sqrt{\epsilon} n, n \sim N(0, I)
-        \end{equation}    
+        \end{equation*}
+
+        \begin{center}
          \begin{algorithmic}
             \STATE {\bfseries Input:} N$\in \mathbf{N}_+$, $\epsilon > 0$ 
             \STATE {\bfseries Output:} Latent code $z_N \sim p_t(z)$
@@ -50,6 +52,7 @@
             \STATE $z_{i + 1} = z_i - \epsilon/2 \nabla_z E(z_i) + \sqrt{\epsilon} n_i$
             \ENDFOR
          \end{algorithmic}
+        \end{center}
     \end{frame}
     \begin{frame}{Frechet Inception Distance}
         FID can be calculated according to the following formula
@@ -156,7 +159,7 @@ where our trained score-based model $\mathbf{s}_{\boldsymbol{\theta}} *\left(\ma
 
     \begin{frame}{Predictor-Corrector Sampling}
         \begin{center}
-            \includegraphics[width=0.7\textwidth]{pics/PC.png}
+            \includegraphics[width=\textwidth]{pics/PC.png}
         \end{center}
     \end{frame}
 
@@ -171,6 +174,14 @@ where our trained score-based model $\mathbf{s}_{\boldsymbol{\theta}} *\left(\ma
         \begin{center}
             \includegraphics[width=0.7\textwidth]{pics/VP_table.png}
         \end{center}
+    \end{frame}
+
+    \begin{frame}{References}
+        \begin{itemize}
+            \item Yang Song, Jascha Sohl-Dickstein, Diederik P. Kingma, Abhishek Kumar, Stefano Ermon, Ben Poole. \textit{Score-Based Generative Modeling through Stochastic Differential Equations} \url{https://arxiv.org/abs/2011.13456}            
+            \item Tong Che, Ruixiang Zhang, Jascha Sohl-Dickstein, Hugo Larochelle, Liam Paull, Yuan Cao, Yoshua Bengio. \textit{Your GAN is Secretly an Energy-based Model and You Should use Discriminator Driven Latent Sampling}  \url{https://arxiv.org/abs/2003.06060}
+            \item Github for DCGAN on CIFAR10 \url{https://github.com/csinva/gan-vae-pretrained-pytorch}
+        \end{itemize}
     \end{frame}
 
     % \input{contents/introduction.tex}
