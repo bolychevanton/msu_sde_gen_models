@@ -1,0 +1,75 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+
+\input{utils/packages.tex}
+\input{utils/bindings.tex}
+\input{contents/titlepage.tex}
+\begin{document}
+    \begin{frame}
+        \titlepage
+    \end{frame}
+
+    \begin{frame}{GAN}
+        \begin{align*}
+            L_D &= -\mathbb{E}_{x \sim p_{data}} [ \text{log} D(x)] - \mathbb{E}_{z \sim p_z} [\text{log}(1 - D(G(z))] \\    
+            L_G &= -\mathbb{E}_{z \sim p_z} [\text{log} D(G(z))]
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{GAN as Energy Based Model}
+        Assume that Discriminator is suboptimal, i.e. $D = D^*$
+        \begin{equation*}
+            D(x) = \operatorname*{logit}(d(x)) = \frac{1}{1 + \exp(-d(x))} \approx \frac{p_d(x)}{p_d(x) + p_g(x)}  = \frac{1}{1 + p_g(x)/p_d(x)}
+        \end{equation*}
+        Thus,
+        \begin{equation*}
+                p_d^*(x) = p_g(x) e^{d(x)} / K = \exp\left( - (-\log p_g(x) - d(x))\right) / K
+        \end{equation*}
+        Energy Function. Boltzmann distribution
+        \begin{equation*}
+            p(z) = \exp(-E(z)) / K 
+        \end{equation*}
+        Thus, assuming that $x = G(z)$ one can obtain the following equation for Energy for GAN
+        \begin{equation*}
+            E(z) = -\log p_0(z) - d(G(z))
+        \end{equation*}
+    \end{frame}
+
+    \begin{frame}{Langevin Dynamics}
+        \begin{equation}
+            z_{i+1} = z_i - \epsilon/2 \nabla_z E(z) + \sqrt{\epsilon} n, n \sim N(0, I)
+        \end{equation}    
+         \begin{algorithmic}
+            \STATE {\bfseries Input:} N$\in \mathbf{N}_+$, $\epsilon > 0$ 
+            \STATE {\bfseries Output:} Latent code $z_N \sim p_t(z)$
+            \STATE Sample $z_0 \sim p_0(z)$   
+            \FOR{$i=1$ {\bfseries to} $N$}
+            \STATE $n_i \sim N(0, 1)$
+            \STATE $z_{i + 1} = z_i - \epsilon/2 \nabla_z E(z_i) + \sqrt{\epsilon} n_i$
+            \ENDFOR
+         \end{algorithmic}
+    \end{frame}
+    \begin{frame}{Frechet Inception Distance}
+        FID can be calculated according to the following formula
+        \begin{equation*}
+            d_F(\mu, \nu):=\left(\inf _{\gamma \in \Gamma(\mu, \nu)} \int_{\mathbb{R}^n \times \mathbb{R}^n}\|x-y\|^2 \mathrm{~d} \gamma(x, y)\right)^{1 / 2}
+        \end{equation*}
+    \end{frame}
+    \begin{frame}{Results} 
+        \begin{center}
+            If one apply Langevin Dynamics for pretrained DCGAN on CIFAR10 we observe the following picture
+            \includegraphics[width=0.7\textwidth]{pics/FID_EBMGAN.png}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}
+        
+    \end{frame}
+
+    % \input{contents/introduction.tex}
+    % \input{contents/statement.tex}
+    % \input{contents/concepts.tex}
+    % \input{contents/global_stabilization.tex}
+    
+    % \bibliography{references}
+    % \bibliographystyle{ieeetr}
+\end{document}
