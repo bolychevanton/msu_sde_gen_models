@@ -1,0 +1,43 @@
+\section{Basic concepts and preliminaries} 
+
+Again, copypaste
+
+\textit{
+The uncontrolled dynamics of system (1) is governed by local interactions and, in large time, leads to the
+formation of clusters. Although, from the mathematical point of view, clusters are a stable configuration for
+the system, we focus on the possibility to steer, using the leader’s action on the group, all agents to a same
+unique opinion, that is, to have emergence of “consensus”
+}
+
+\begin{definition}
+We call consensus a configuration in which the states of all agents are equal, i.e,
+$$
+\mathbf{x}^*=\left(x_0, x_1, \ldots, x_N\right) \in \mathbb{R}^{(N+1)} \quad \text { such that } \quad x_0=x_1=\cdots=x_N .
+$$
+\end{definition}
+
+Note that it will be convinient for us to reformulate \eqref{eq:model_init} in terms of $y_i(t) := x_i(t) - x_0(t)$ for $i = 1, \ldots, N$:
+\begin{equation}\label{eq:model}
+    dy_i(t) = \left[-u(t) + \sum_{j=1}^N a_{i j}\left(y_j(t)-y_i(t)\right)-c_i y_i(t)\right] dt + \sigma_i(\Boldy(t)) dW^i_t, \qquad  i = 1, \ldots N,
+\end{equation}
+where $\Prob(y_j(0) = y_j^0) = 1$ for $j = 1, \ldots, N$ and $\Boldy_0 = (y_1^0, \ldots. y_N^0) \in \Real^N$. 
+Thus, the consensus is the configuration $\Boldy^* = (y_1, \ldots, y_n) \in \Real^N$, where $y_1 = \ldots = y_N  = 0$. We will also need
+\begin{definition}[modification from \cite{Khasminskii}]
+    We will call the solution of the system \eqref{eq:model} exponentially $p$-stable if there exist positive constants $A$ and $\beta$ such that
+    \[
+       \Exp \|\Boldy(t)\|^p \leq A  \|\Boldy_0\|^p \exp\left\{-\beta t\right\}
+    \]
+    for all $\Boldy_0 = (y_1^0, \ldots. y_N^0) \in \Real^N$.
+\end{definition}
+and 
+\begin{lemma}[Gronwall-Bellman Lemma \cite{Khasminskii}]\label{lemma:gronwall-bellman}
+Let $f(t)$ and $g(t)$ be real-valued functions on $\Real_{\geq0}$ and let $f(t)$ be differentiable on $\Real_{>0}$. If
+\[ 
+f'(t) \leq f(t) g(t) 
+\]
+Then for $t \geq 0$
+$$
+f(t) \leq f(0) \exp \left\{\int_0^t g\left(\tau\right) d \tau\right\} .
+$$
+\end{lemma}
+
