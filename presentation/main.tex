@@ -3,11 +3,14 @@
 \input{utils/packages.tex}
 \input{utils/bindings.tex}
 \input{contents/titlepage.tex}
+
+
+
 \begin{document}
     \begin{frame}
         \titlepage
     \end{frame}
-
+    \section{GAN as Energy-Based Model} 
     \begin{frame}{GAN}
         \begin{align*}
             L_D &= -\mathbb{E}_{x \sim p_{data}} [ \text{log} D(x)] - \mathbb{E}_{z \sim p_z} [\text{log}(1 - D(G(z))] \\    
@@ -60,10 +63,61 @@
             \includegraphics[width=0.7\textwidth]{pics/FID_EBMGAN.png}
         \end{center}
     \end{frame}
+    \section{Score-based Generative Modelling through SDE} 
+    \begin{frame}{Score-based Generative Modelling through SDE}
+        \begin{center}
+            The core idea of the paper can be described via the following picture
+            \includegraphics[width=0.7\textwidth]{pics/NoiseDenoise.png}
+        \end{center}
+    \end{frame}
 
-    \begin{frame}
+    \begin{frame}{Score-based Generative Modelling through SDE}
+        \begin{center}
+            One more picture
+            \includegraphics[width=0.7\textwidth]{pics/NoiseDenoise2.png}
+        \end{center}
+        The main problem is to fit the neural network 
+        % $$
+        %     \boldsymbol{s}_{\boldsymbol{\theta}(\boldsymbol{x}, t)} \approx \nabla_{\boldsymbol{x}} p_t(\boldsymbol{x})
+        % $$
+    \end{frame}
+
+    \begin{frame}{2 approaches}
+        In $dx = f(x, t) + g(t) d w$ functions $f$ and $g$ can be arbitrary, so we will consider 2 approaches
+        \begin{itemize}
+            \item Variance Exploding Approach
+            \item Variance Preserving Approach
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Variance Exploding}
         
     \end{frame}
+
+    \begin{frame}{Loss Function for Variance Exploding Approach}
+    \end{frame}
+
+    \begin{frame}{Variance Preserving}
+    \end{frame}
+
+    \begin{frame}{Loss Function for Variance Preserving Approach}
+    \end{frame}
+
+    \begin{frame}{Ancestral Sampling}
+    \end{frame}
+
+    \begin{frame}{Reverse Diffusion}
+    \end{frame}
+
+    \begin{frame}{Predictor Only Sampling}
+    \end{frame}
+
+    \begin{frame}{Predictor-Corrector Sampling}
+    \end{frame}
+
+    \begin{frame}{Results. FID on CIFAR10}
+    \end{frame}
+
 
     % \input{contents/introduction.tex}
     % \input{contents/statement.tex}

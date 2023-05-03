@@ -35,3 +35,14 @@
 \newcommand{\Mat}[2]{\operatorname{Mat}_{#1 \times #2}(\Real)}
 \newcommand{\Beps}{B_{\eps}}
 \newcommand{\notBeps}{\overline{B}_{\eps}}
+
+
+\AtBeginSection[]
+{
+\begin{frame}<beamer>{Table of Contents}
+\tableofcontents[currentsection,currentsubsection, 
+    hideothersubsections, 
+    sectionstyle=show/shaded,
+]
+\end{frame}
+}
