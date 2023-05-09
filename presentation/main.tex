@@ -10,6 +10,24 @@
     \begin{frame}
         \titlepage
     \end{frame}
+    \begin{frame}{Contribution}
+        This work was developed as the final project for the \textbf{Evgeniy Burnaev}'s course  
+        \textbf{Machine Learning} that was held in Skolkovo Intsitute of Science and Technology.
+        Contribution of all the participants is as follows:
+        \begin{enumerate}
+            \item \textbf{Anton Bolychev} participated as the \textbf{Principal Developer} in the present work. The core
+            research, the code, the repo structure was prepared and finalized by him. Moreover he is the only 
+            author of the presentation.
+            \item \textbf{Georgiy Malaniya} particapated as the \textbf{Team Lead}. He maintained all the management
+            process of all the participants
+            \item \textbf{Oleg Shepelin} and \textbf{Nikolay Kalmykov} participated as 
+            the \textbf{Core Developers} and prepared the draft of main loop for Langevin Dynamics
+            \item \textbf{Vadim Shirokinsky} was responsible for the calculating FIDs routine and took part in preparing
+            the presentation for Skoltech.
+            \item \textbf{Anastasiya Archangelskaya} finalized results and prepared the report with presentation for
+            Skoltech
+        \end{enumerate}
+    \end{frame}
     \section{GAN as Energy-Based Model} 
     \begin{frame}{GAN}
         \begin{align*}
@@ -17,7 +35,7 @@
             L_G &= -\mathbb{E}_{z \sim p_z} [\text{log} D(G(z))]
         \end{align*}
     \end{frame}
-
+    
     \begin{frame}{GAN as Energy Based Model}
         Assume that Discriminator is suboptimal, i.e. $D = D^*$
         \begin{equation*}
@@ -172,7 +190,19 @@ where our trained score-based model $\mathbf{s}_{\boldsymbol{\theta}} *\left(\ma
             \includegraphics[width=0.7\textwidth]{pics/VP_table.png}
         \end{center}
     \end{frame}
-
+    \section{Conclusion}
+    \begin{frame}{Conclusion}
+        This work is devoted to examining the power of SDE theory in Image Generations.
+        The work consists of 2 parts
+        \begin{enumerate}
+            \item The first part examines the paper which main idea is based on the fact
+            that GAN can be interpreted as Energy Based Model. Thus, one can easily
+            apply Langevin Dynamics for it which can improve FID metrics for already pretrained 
+            GAN model. The corresponding plot of FID behavior with dependence on  
+            the Langevin steps is presented on this slide.
+            \item The second part reproduces experiments from the paper that uses the  
+        \end{enumerate}
+    \end{frame}
     % \input{contents/introduction.tex}
     % \input{contents/statement.tex}
     % \input{contents/concepts.tex}
