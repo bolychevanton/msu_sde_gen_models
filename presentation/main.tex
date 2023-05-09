@@ -81,7 +81,8 @@
     \end{frame}
     \begin{frame}{\hypertarget{frame:res-energy}{Results}} 
         \begin{center}
-            If one apply Langevin Dynamics for pretrained DCGAN on CIFAR10 we observe the following picture
+            If one apply Langevin Dynamics for pretrained DCGAN on CIFAR10 one can observe 
+            that FID metrics decreases with increasing number of Langevin steps.
             \includegraphics[width=0.7\textwidth]{pics/FID_EBMGAN.png}
         \end{center}
     \end{frame}
@@ -187,6 +188,8 @@ where our trained score-based model $\mathbf{s}_{\boldsymbol{\theta}} *\left(\ma
         \begin{center}
             \includegraphics[width=0.7\textwidth]{pics/VE_table.png}
         \end{center}
+        As we can see Predictor-Corrector sampling gives the best performance in terms of
+        FID metrics
     \end{frame}
 
 
@@ -194,10 +197,12 @@ where our trained score-based model $\mathbf{s}_{\boldsymbol{\theta}} *\left(\ma
         \begin{center}
             \includegraphics[width=0.7\textwidth]{pics/VP_table.png}
         \end{center}
+        As we can see Predictor-Corrector sampling gives the best performance in terms of
+        FID metrics
     \end{frame}
     \section{Conclusion}
     \begin{frame}{Conclusion}
-        This work is devoted to examining the power of SDE theory in Image Generations.
+        This work is devoted to examining the power of SDE theory in Image Generation.
         The work consists of 2 parts
         \begin{enumerate}
             \item The \ref{sec:energy-gan} part examines the paper [\ref{bib:energy-gan}] which main idea is based on the fact
