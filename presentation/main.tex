@@ -28,7 +28,8 @@
             Skoltech
         \end{enumerate}
     \end{frame}
-    \section{GAN as Energy-Based Model} 
+    \section{GAN as Energy-Based Model}
+    \label{sec:energy-gan} 
     \begin{frame}{GAN}
         \begin{align*}
             L_D &= -\mathbb{E}_{x \sim p_{data}} [ \text{log} D(x)] - \mathbb{E}_{z \sim p_z} [\text{log}(1 - D(G(z))] \\    
@@ -56,9 +57,11 @@
     \end{frame}
 
     \begin{frame}{Langevin Dynamics}
-        \begin{equation}
+        \begin{equation*}
             z_{i+1} = z_i - \epsilon/2 \nabla_z E(z) + \sqrt{\epsilon} n, n \sim N(0, I)
-        \end{equation}    
+        \end{equation*}
+
+        \begin{center}
          \begin{algorithmic}
             \STATE {\bfseries Input:} N$\in \mathbf{N}_+$, $\epsilon > 0$ 
             \STATE {\bfseries Output:} Latent code $z_N \sim p_t(z)$
@@ -68,6 +71,7 @@
             \STATE $z_{i + 1} = z_i - \epsilon/2 \nabla_z E(z_i) + \sqrt{\epsilon} n_i$
             \ENDFOR
          \end{algorithmic}
+        \end{center}
     \end{frame}
     \begin{frame}{Frechet Inception Distance}
         FID can be calculated according to the following formula
@@ -75,13 +79,14 @@
             d_F(\mu, \nu):=\left(\inf _{\gamma \in \Gamma(\mu, \nu)} \int_{\mathbb{R}^n \times \mathbb{R}^n}\|x-y\|^2 \mathrm{~d} \gamma(x, y)\right)^{1 / 2}
         \end{equation*}
     \end{frame}
-    \begin{frame}{Results} 
+    \begin{frame}{\hypertarget{frame:res-energy}{Results}} 
         \begin{center}
             If one apply Langevin Dynamics for pretrained DCGAN on CIFAR10 we observe the following picture
             \includegraphics[width=0.7\textwidth]{pics/FID_EBMGAN.png}
         \end{center}
     \end{frame}
-    \section{Score-based Generative Modelling through SDE} 
+    \section{Score-based Generative Modelling through SDE}
+    \label{sec:reverse-sde} 
     \begin{frame}{Score-based Generative Modelling through SDE}
         \begin{center}
             The core idea of the paper can be described via the following picture
@@ -174,18 +179,18 @@ where our trained score-based model $\mathbf{s}_{\boldsymbol{\theta}} *\left(\ma
 
     \begin{frame}{Predictor-Corrector Sampling}
         \begin{center}
-            \includegraphics[width=0.7\textwidth]{pics/PC.png}
+            \includegraphics[width=\textwidth]{pics/PC.png}
         \end{center}
     \end{frame}
 
-    \begin{frame}{Results. FID on CIFAR10. VE}            
+    \begin{frame}{\hypertarget{frame:res-ve}{Results. FID on CIFAR10. VE}}            
         \begin{center}
             \includegraphics[width=0.7\textwidth]{pics/VE_table.png}
         \end{center}
     \end{frame}
 
 
-    \begin{frame}{Results. FID on CIFAR10. VP}            
+    \begin{frame}{\hypertarget{frame:res-vp}{Results. FID on CIFAR10. VP}}            
         \begin{center}
             \includegraphics[width=0.7\textwidth]{pics/VP_table.png}
         \end{center}
@@ -195,14 +200,34 @@ where our trained score-based model $\mathbf{s}_{\boldsymbol{\theta}} *\left(\ma
         This work is devoted to examining the power of SDE theory in Image Generations.
         The work consists of 2 parts
         \begin{enumerate}
-            \item The first part examines the paper which main idea is based on the fact
+            \item The \ref{sec:energy-gan} part examines the paper [\ref{bib:energy-gan}] which main idea is based on the fact
             that GAN can be interpreted as Energy Based Model. Thus, one can easily
             apply Langevin Dynamics for it which can improve FID metrics for already pretrained 
             GAN model. The corresponding plot of FID behavior with dependence on  
-            the Langevin steps is presented on this slide.
-            \item The second part reproduces experiments from the paper that uses the  
+            the Langevin steps is presented on \textcolor{blue}{\hyperlink{frame:res-energy}{this}} slide.
+            \item The \ref{sec:reverse-sde} part reproduces experiments from the paper 
+            [\ref{bib:reverse-sde}] that implements the following 
+            idea. What if one can controllably transform the initial data disctibution into
+            noise and reverse the process? Well, that can be done via reversing the SDE formula. Namely, 
+            if one consider the SDE process that is defined by SDE 
+            $\mathrm{d} \mathbf{x}=\mathbf{f}(\mathbf{x}, t) \mathrm{d} t+g(t) \mathrm{d} \mathbf{w}$
+            then one can reverse it via 
+            $\mathrm{d} \mathbf{x}=\left[\mathbf{f}(\mathbf{x}, t)-g(t)^2 \nabla_{\mathbf{x}} \log p_t(\mathbf{x})\right] \mathrm{d} t+g(t) \mathrm{d} \overline{\mathbf{w}}$. 
+            In the paper several sampling technics are examined, and the results are finalized on 
+            \textcolor{blue}{\hyperlink{frame:res-ve}{this}} and 
+            \textcolor{blue}{\hyperlink{frame:res-vp}{this}} slides. 
         \end{enumerate}
     \end{frame}
+    \section{References}
+
+    \begin{frame}{References}
+        \begin{enumerate}
+            \item\label{bib:energy-gan} Tong Che, Ruixiang Zhang, Jascha Sohl-Dickstein, Hugo Larochelle, Liam Paull, Yuan Cao, Yoshua Bengio. \textit{Your GAN is Secretly an Energy-based Model and You Should use Discriminator Driven Latent Sampling}  \url{https://arxiv.org/abs/2003.06060}
+            \item\label{bib:reverse-sde} Yang Song, Jascha Sohl-Dickstein, Diederik P. Kingma, Abhishek Kumar, Stefano Ermon, Ben Poole. \textit{Score-Based Generative Modeling through Stochastic Differential Equations} \url{https://arxiv.org/abs/2011.13456}            
+            \item Github for DCGAN on CIFAR10 \url{https://github.com/csinva/gan-vae-pretrained-pytorch}
+        \end{enumerate}
+    \end{frame}
+
     % \input{contents/introduction.tex}
     % \input{contents/statement.tex}
     % \input{contents/concepts.tex}
